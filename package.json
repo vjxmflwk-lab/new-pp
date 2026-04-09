@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "pnpm test && next build",
+    "build": "pnpm approve-builds && prisma generate && pnpm test && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
