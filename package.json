@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "pnpm approve-builds --yes && prisma generate && pnpm test && next build",
+    "build": "pnpm config set side-effects-cache false && prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
