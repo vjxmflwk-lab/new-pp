@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
 interface SortState {
-  sortOrder: "desc" | "asc";
+  isSortDesc: boolean;
   toggleSort: () => void;
 }
 
 export const useSortStore = create<SortState>((set) => ({
-  sortOrder: "desc", // 기본값: 최신순
+  isSortDesc: true, // 기본값: 최신순
 
   toggleSort: () =>
     set((state) => ({
-      sortOrder: state.sortOrder === "desc" ? "asc" : "desc",
+      isSortDesc: state.isSortDesc ? false : true,
     })),
 }));

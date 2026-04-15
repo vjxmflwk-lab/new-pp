@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 
 export default function BottomNav() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { sortOrder, toggleSort } = useSortStore();
+  const { isSortDesc, toggleSort } = useSortStore();
 
   // 현재 경로가 /info 이면 컴포넌트 렌더링하지 않음
   const pathname = usePathname();
@@ -28,13 +28,9 @@ export default function BottomNav() {
               toggleSort();
             }}
           >
-            {sortOrder === "desc" ? (
-              <ArrowDownAZ size={24} />
-            ) : (
-              <ArrowUpAZ size={24} />
-            )}
+            {isSortDesc ? <ArrowDownAZ size={24} /> : <ArrowUpAZ size={24} />}
             <span className="text-[10px] mt-1 font-medium">
-              {sortOrder === "desc" ? "최신순" : "과거순"}
+              {isSortDesc ? "최신순" : "과거순"}
             </span>
           </button>
 

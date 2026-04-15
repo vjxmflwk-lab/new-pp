@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSortStore } from "@/store/useSortStore";
 import { PostType } from "@/types";
 import PostDetail from "./PostDetail";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,9 @@ export default function PostDetailFeedMobile({
 }) {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
+
+  // 정렬 기준
+  const isSortDesc = useSortStore((state) => state.isSortDesc);
 
   // 조회 post 데이터 존재 여부 체크하여 없으면 메인으로 이동시킴
   const checkPersencePost = async () => {
@@ -95,7 +99,7 @@ export default function PostDetailFeedMobile({
       <nav className="sticky top-0 z-50 flex h-14 items-center border-b bg-white/95  backdrop-blur-sm">
         <button
           onClick={handleClose}
-          className="flex h-10 w-30 items-center justify-center rounded-full active:bg-gray-100"
+          className="flex h-10 w-30 items-center justify-center rounded-full outline-none select-none"
           aria-label="뒤로 가기"
         >
           <ArrowLeft className="h-6 w-6 text-gray-800" />
@@ -114,7 +118,7 @@ export default function PostDetailFeedMobile({
       </div>
 
       <div className={`${isReady ? "visible" : "invisible"}`}>
-        {initialPosts.map((post) => (
+        {(isSortDesc ? initialPosts : initialPosts.toReversed()).map((post) => (
           <article
             key={post.id}
             id={`post-${post.id}`}

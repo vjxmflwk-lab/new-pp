@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PostType } from "@/types";
+import { PostType, PostMediaType } from "@/types";
 import { MoreVertical, Bookmark, Share2, Edit3, Trash2 } from "lucide-react";
 import { deletePost, updatePostCaption } from "@/app/actions/post";
 import { useRouter } from "next/navigation";
@@ -18,9 +18,8 @@ export default function PostDetail({ post }: { post: PostType }) {
 
   const router = useRouter();
 
-  const onScroll = (e: any) => {
-    const x = e.target.scrollLeft;
-    const width = e.target.clientWidth;
+  const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollLeft: x, clientWidth: width } = e.currentTarget;
     setCurrent(Math.round(x / width) + 1);
   };
 
@@ -104,7 +103,7 @@ export default function PostDetail({ post }: { post: PostType }) {
           onScroll={onScroll}
           className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
         >
-          {post.media.map((m: any) => (
+          {post.media.map((m: PostMediaType) => (
             <div key={m.id} className="w-full flex-shrink-0 snap-center">
               <img
                 src={m.mediaUrl}
@@ -128,7 +127,7 @@ export default function PostDetail({ post }: { post: PostType }) {
         {/* 인디케이터 (도트) - 사진이 여러 장일 때만 노출 */}
         {post.media.length > 1 && (
           <div className="flex justify-center items-center gap-1 mb-2">
-            {post.media.map((_: any, i: number) => (
+            {post.media.map((_: PostMediaType, i: number) => (
               <div
                 key={i}
                 className={`rounded-full transition-all duration-300 ${

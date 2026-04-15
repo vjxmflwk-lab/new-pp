@@ -99,38 +99,28 @@ export default function UploadForm({ onSuccess }: { onSuccess: () => void }) {
     const files = validatedData.data.images;
 
     try {
-      const uploadPromises = files.map(async (file) => {
-        const options = {
-          maxSizeMB: 1, // 최대 용량 1MB로 제한
-          maxWidthOrHeight: 1920, // 가로세로 최대 1920px (FHD급)
-          useWebWorker: true, // 별도 스레드에서 처리 (UI 버벅임 방지)
-          fileType: "image/webp",
-        };
+      const compressionPromises = files.map((file) =>
+        imageCompression(file, {
+          maxSizeMB: 0.8, // 용량을 조금 더 타이트하게 줄여보세요
+          maxWidthOrHeight: 1280, // 모바일 업로드용으론 1280도 충분히 고화질입니다 ㅋ
+          useWebWorker: true,
+        }),
+      );
 
-        // 압축 수행
-        const compressedFile = await imageCompression(file, options);
+      const compressedFiles = await Promise.all(compressionPromises);
 
-        const fileExt = compressedFile.name.split(".").pop();
+      const uploadPromises = compressedFiles.map(async (file) => {
+        const fileExt = file.name.split(".").pop();
         const fileName = `${uuidv4()}.${fileExt}`;
-        const filePath = `${fileName}`;
 
-        // Supabase Storage 업로드
-        // vercel 통신 용량 제한으로 클라이언트에서 직접 supabase로 업로드
         const { error: storageError } = await supabase.storage
           .from("photos")
-          .upload(filePath, compressedFile, {
-            cacheControl: "31536000",
-            upsert: true,
-          });
+          .upload(fileName, file, { cacheControl: "31536000", upsert: true });
 
         if (storageError) throw storageError;
 
-        // 퍼블릭 URL 생성
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("photos").getPublicUrl(filePath);
-
-        return publicUrl; // URL만 반환하도록 변경
+        const { data } = supabase.storage.from("photos").getPublicUrl(fileName);
+        return data.publicUrl;
       });
 
       // 모든 파일이 supabase에 업로드될 때까지 대기
@@ -203,22 +193,17 @@ export default function UploadForm({ onSuccess }: { onSuccess: () => void }) {
         onChange={(e) => setCaption(e.target.value)}
       />
       다중 업로드는 개발중...
-      {/* <button
-        className="w-full py-4 bg-blue-500 text-white rounded-xl font-bold active:scale-[0.98] transition-transform"
-        onTouchStart={handleSubmit}
-      >
-        {images.length}개의 게시물 등록하기
-      </button> */}
       <button
         type="button"
-        className={`w-full py-4 rounded-xl font-bold transition-transform active:scale-[0.98] flex items-center justify-center gap-2 ${
+        className={` w-full py-4 rounded-xl font-bold transition-transform active:scale-[0.98] flex items-center justify-center gap-2 ${
           isUploading
-            ? "bg-gray-400 text-white cursor-not-allowed" // 업로드 중일 때 스타일
-            : "bg-blue-500 text-white hover:bg-blue-600" // 평소 스타일
+            ? "bg-gray-400 text-white cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
         }`}
+        autoFocus
         onTouchStart={!isUploading ? handleSubmit : undefined}
-        onClick={!isUploading ? handleSubmit : undefined} // 일반 클릭 대응
-        disabled={isUploading} // 실제 버튼 기능 차단
+        onClick={!isUploading ? handleSubmit : undefined}
+        disabled={isUploading}
       >
         {isUploading ? (
           <>
@@ -230,6 +215,13 @@ export default function UploadForm({ onSuccess }: { onSuccess: () => void }) {
           <span>{images.length}개의 게시물 등록하기</span>
         )}
       </button>
+      {/* 업로드 중에 인터페이스 차단 */}
+      {isUploading && (
+        <div
+          className="fixed inset-0 bg-black/30 cursor-wait pointer-events-auto touch-none flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
+        />
+      )}
     </div>
   );
 }

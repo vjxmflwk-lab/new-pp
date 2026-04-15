@@ -17,13 +17,12 @@ const sections = [
   {
     title: "상태관리 & 통신",
     items: [
-      { label: "Server상태", value: "Next Server Actions" },
-      { label: "Client상태", value: "Zustand" },
+      { label: "Client상태관리", value: "Zustand" },
+      { label: "데이터 통신", value: "Next Server Actions" },
       {
         label: "캐싱",
         value: "TanStack Query",
       },
-      { label: "유효성검증", value: "Zod" },
     ],
   },
   {
@@ -46,7 +45,7 @@ const sections = [
     items: [
       { label: "패키지매니저", value: "pnpm" },
       { label: "단위테스트", value: "Jest" },
-      { label: "빌드", value: "Turbopack (Bundler), SWC (Compiler)" },
+      { label: "빌드", value: "Turbopack (번들러), SWC (컴파일러)" },
       { label: "CI/CD", value: "GitHub Actions" },
     ],
   },
@@ -61,11 +60,13 @@ export default function InfoPage() {
       <nav className="sticky top-0 z-10 flex h-14 items-center border-b bg-white/80 px-4 backdrop-blur-md">
         <button
           onClick={() => router.back()}
-          className="flex h-10 w-10 items-center justify-center rounded-full active:bg-gray-100 transition-colors"
+          className="flex h-10 w-30 items-center justify-center rounded-full 
+             [WebkitTapHighlightColor:transparent] outline-none select-none"
+          aria-label="뒤로 가기"
         >
-          <ArrowLeft size={24} className="text-gray-800" />
+          <ArrowLeft className="h-6 w-6 text-gray-800" />
+          <h2 className="ml-2 text-base font-bold text-gray-900">메인으로</h2>
         </button>
-        <h1 className="ml-2 text-lg font-bold text-gray-900">메인으로</h1>
       </nav>
 
       {/*  정보 영역 */}

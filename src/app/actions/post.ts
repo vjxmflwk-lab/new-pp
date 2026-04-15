@@ -30,9 +30,12 @@ export const getPostsAll = cache(async () => {
 });
 
 // 전체 post 조회 with cursor
-export async function getPostsAllWithCursor(cursor?: string) {
+export async function getPostsAllWithCursor(
+  cursor?: string,
+  isSortDesc: boolean = true,
+) {
   try {
-    const limit = 12;
+    const limit = 15;
 
     const posts = await prisma.post.findMany({
       include: {
@@ -45,7 +48,7 @@ export async function getPostsAllWithCursor(cursor?: string) {
       take: limit,
       skip: cursor ? 1 : 0, // 커서가 있으면 그 다음 데이터부터
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: isSortDesc ? "desc" : "asc" },
     });
 
     // 다음 가져올 데이터가 있는지 확인을 위해 마지막 ID 반환

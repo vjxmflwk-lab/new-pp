@@ -26,7 +26,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <div className="flex min-h-screen md:hidden">
+        <div className="flex  md:hidden">
           <main className="flex-1 md:ml-[240px] md:pb-0">
             <QueryProvider>{children}</QueryProvider>
           </main>

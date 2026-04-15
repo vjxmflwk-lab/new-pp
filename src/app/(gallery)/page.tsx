@@ -1,6 +1,6 @@
 import { getPostsAllWithCursor } from "@/app/actions/post";
 import BottomNav from "@/components/Navigation/BottomNav";
-import InfinitePhotoList from "@/components/InfinitePhotoList";
+import InfinitePostList from "@/components/InfinitePostList";
 
 export default async function GalleryPage() {
   const response = await getPostsAllWithCursor();
@@ -9,7 +9,7 @@ export default async function GalleryPage() {
 
   return (
     <div className="mx-auto">
-      <InfinitePhotoList initialPhotos={posts} initialCursor={nextCursor} />
+      <InfinitePostList initialPosts={posts} initialCursor={nextCursor} />
       <BottomNav />
     </div>
   );

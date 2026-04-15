@@ -131,6 +131,12 @@
 }
 
 [id^="post-"] {
-  /* 상단 헤더 높이가 60px라면 그만큼 여백을 두고 스크롤 정지 */
+  /* 상단 헤더 높이만큼 여백을 두고 스크롤 정지 */
   scroll-margin-top: 56px;
+}
+
+/* 브라우저 기본 터치 하이라이트 제거 */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
