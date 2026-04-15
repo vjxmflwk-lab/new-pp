@@ -126,5 +126,11 @@
   }
   html {
     @apply font-sans;
+    scrollbar-gutter: stable;
   }
+}
+
+[id^="post-"] {
+  /* 상단 헤더 높이가 60px라면 그만큼 여백을 두고 스크롤 정지 */
+  scroll-margin-top: 56px;
 }

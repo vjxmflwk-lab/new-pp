@@ -13,9 +13,28 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Guestbook {
-  id        Int      @id @default(autoincrement())
-  email     String
-  body      String
-  createdAt DateTime @default(now())
+model Post {
+  id          String      @id @default(cuid())
+  caption     String?     
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  media       PostMedia[]
+}
+
+model PostMedia {
+  id           String    @id @default(cuid())
+  postId       String
+  mediaUrl     String    // 원본 이미지/비디오 URL
+  mediaType    MediaType @default(IMAGE) // 미디어 타입 구분
+  orderIndex   Int       @default(0)     // 노출 순서
+  thumbnailUrl String?   // 저용량 미리보기 또는 비디오 썸네일
+  createdAt    DateTime  @default(now())
+
+  // 관계 설정: Post가 삭제되면 해당 미디어들도 함께 삭제됨
+  post         Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
 }
