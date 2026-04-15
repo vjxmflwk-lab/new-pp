@@ -20,13 +20,14 @@ export const downloadImage = async (url: string, fileName: string) => {
   }
 };
 
+// 묶음 이미지 저장
 export const downloadAllImages = async (
   mediaList: { mediaUrl: string }[],
   postId: string,
 ) => {
   // 모든 다운로드 프로미스를 생성
   const downloadPromises = mediaList.map((media, index) => {
-    const fileName = `jaeyi_${postId}_${index + 1}.jpg`;
+    const fileName = `jaeyi_${postId}_${index + 1}`;
     return downloadImage(media.mediaUrl, fileName);
   });
 

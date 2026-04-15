@@ -1,16 +1,5 @@
 import { z } from "zod";
 
-// 방명록
-export const GuestbookSchema = z.object({
-  email: z.string().email("올바른 형싱이 아니얌;"),
-  body: z.string().min(5, "최소 5글자 이상 입력행;").max(100, "최대 100자얌"),
-});
-export type GuestbookInput = z.infer<typeof GuestbookSchema>;
-export type GuestbookEntry = GuestbookInput & {
-  id: number;
-  createdAt?: Date;
-};
-
 // 이미지
 export const ImageUploadSchema = z.object({
   images: z

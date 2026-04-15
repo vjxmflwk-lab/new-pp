@@ -53,7 +53,8 @@ export async function generateMetadata({
     title: `김재이 갤러리 | ${post.caption?.slice(0, 10)}...`,
     openGraph: {
       title: "김재이 갤러리",
-      description: post.caption || "공유된 이미지를 확인해보세요.",
+      description:
+        `${post.caption?.slice(0, 10)}...` || "공유된 이미지를 확인해보세요.",
       images: [
         {
           url:

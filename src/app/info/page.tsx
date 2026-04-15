@@ -20,7 +20,7 @@ const sections = [
       { label: "Server상태", value: "Next Server Actions" },
       { label: "Client상태", value: "Zustand" },
       {
-        label: "통신/캐싱",
+        label: "캐싱",
         value: "TanStack Query",
       },
       { label: "유효성검증", value: "Zod" },
@@ -77,11 +77,22 @@ export default function InfoPage() {
               김<span className="text-pink-300">재</span>
               <span className="text-yellow-300">이</span> 사진 올리는 사이트 ㅋ
             </h3>
+
             <div className="mb-10 flex justify-center pt-7">
               <div className="w-full max-w-[350px] rounded-x0.5 overflow-hidden border border-gray-100 shadow-sm">
-                <Image src={infoPhoto} alt="" priority />
+                <Image
+                  src={infoPhoto}
+                  alt=""
+                  priority={true}
+                  fetchPriority={"high"}
+                  loading={"eager"}
+                />
               </div>
             </div>
+            <h3 className="text-[20px] font-bold tracking-tight text-gray-700">
+              [참고] 무료 스토리지를 사용중이라 이미지 업로드 시 압축됩니다.
+              고로 다운 받을 때도 압축된 이미지입니다.
+            </h3>
           </div>
 
           <div className="h-1 w-full bg-gray-100 border-y border-gray-100 my-10" />

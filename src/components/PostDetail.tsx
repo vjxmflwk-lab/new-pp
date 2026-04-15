@@ -42,15 +42,15 @@ export default function PostDetail({ post }: { post: PostType }) {
     }
   };
 
-  // 이미지 저장
+  // 묶음 이미지 저장
+  // 인덱스 개별 이미지 저장은 구형해야함
   const handleDownload = async () => {
     if (!post.media || post.media.length === 0) return;
 
     // 현재 보고 있는 이미지의 원본 URL 가져오기
-    const index = post.media[0]?.orderIndex || 0;
-    const currentImage = post.media[index].mediaUrl;
-
-    const fileName = `${post.id}_${index}.jpg`;
+    // const index = post.media[0]?.orderIndex || 0;
+    // const currentImage = post.media[index].mediaUrl;
+    // const fileName = `${post.id}_${index}.jpg`;
 
     setIsMenuOpen(false);
     await downloadAllImages(post.media, post.id);
@@ -61,8 +61,8 @@ export default function PostDetail({ post }: { post: PostType }) {
     // 공유할 현재 포스트의 절대 경로 URL 생성
     const shareUrl = `${window.location.origin}/post/${post.id}`;
     const shareData = {
-      title: "나의 갤러리",
-      text: post.caption || "사진을 확인해보세요!",
+      title: "김재이 갤러리",
+      text: "",
       url: shareUrl,
     };
 

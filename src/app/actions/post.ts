@@ -61,36 +61,10 @@ export async function getPostsAllWithCursor(cursor?: string) {
 
 // post 업로드
 export async function uploadPost(
-  files: File[],
+  uploadedUrls: string[],
   caption: string,
 ): Promise<ActionResponseType> {
   try {
-    const uploadPromises = files.map(async (file) => {
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${uuidv4()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      // Supabase Storage 업로드
-      const { error: storageError } = await supabase.storage
-        .from("photos")
-        .upload(filePath, file, {
-          cacheControl: "31536000",
-          upsert: true,
-        });
-
-      if (storageError) throw storageError;
-
-      // 퍼블릭 URL 생성
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("photos").getPublicUrl(filePath);
-
-      return publicUrl; // URL만 반환하도록 변경
-    });
-
-    // 모든 파일이 업로드될 때까지 대기
-    const uploadedUrls = await Promise.all(uploadPromises);
-
     // Prisma를 사용하여 1:N 구조로 데이터 저장
     await prisma.post.create({
       data: {
