@@ -18,7 +18,7 @@ export default async function InterceptedPostDetail({
       <div className="h-full w-full overflow-y-auto bg-white md:h-[90vh] md:max-w-5xl md:rounded-lg">
         <PostDetailFeedMobile
           initialPosts={allPosts}
-          targetId={id}
+          initialTargetId={id}
           isIntercepted={true}
         />
       </div>

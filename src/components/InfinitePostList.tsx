@@ -26,7 +26,6 @@ export default function InfinitePostList({
   const [ref, inView] = useInView({ threshold: 0.5 }); // 바닥 감지용 hook
   const [isFetching, setIsFetching] = useState(false);
 
-  // 정렬 기준 쿠키와 zustand 간 동기화
   const isSortDesc = useSortStore((state) => state.isSortDesc);
 
   // 전체 데이터 합치기 및 정렬

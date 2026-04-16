@@ -27,7 +27,7 @@ export default async function DirectEnteredPostDetail({
       <div className="fixed inset-0 z-50 bg-white md:hidden">
         <PostDetailFeedMobile
           initialPosts={allPosts}
-          targetId={id}
+          initialTargetId={id}
           isIntercepted={false}
         />
       </div>

@@ -57,9 +57,12 @@ export default function InfoPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* 상단 고정 헤더 영역 */}
-      <nav className="sticky top-0 z-10 flex h-14 items-center border-b bg-white/80 px-4 backdrop-blur-md">
+      <nav className="sticky top-0 z-10 flex h-14 items-center border-b bg-white/80 backdrop-blur-md">
         <button
-          onClick={() => router.back()}
+          onClick={() => {
+            router.refresh();
+            router.back();
+          }}
           className="flex h-10 w-30 items-center justify-center rounded-full 
              [WebkitTapHighlightColor:transparent] outline-none select-none"
           aria-label="뒤로 가기"

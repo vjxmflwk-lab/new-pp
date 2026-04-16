@@ -32,7 +32,9 @@ export default function PostDetail({ post }: { post: PostType }) {
 
       if (result.success) {
         setIsMenuOpen(false);
-        router.push("/", { scroll: false });
+        // router.push("/", { scroll: false });
+        router.refresh();
+        router.replace("/");
       } else {
         alert(result.errors);
       }

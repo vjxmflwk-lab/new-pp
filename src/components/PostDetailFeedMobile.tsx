@@ -11,11 +11,11 @@ import { getPostById } from "@/app/actions";
 
 export default function PostDetailFeedMobile({
   initialPosts,
-  targetId,
+  initialTargetId,
   isIntercepted,
 }: {
   initialPosts: PostType[];
-  targetId: string;
+  initialTargetId: string;
   isIntercepted: boolean; // 인터셉트 여부(true:메인에서 진입, false:url로 진입)
 }) {
   const router = useRouter();
@@ -24,23 +24,25 @@ export default function PostDetailFeedMobile({
   // 정렬 기준
   const isSortDesc = useSortStore((state) => state.isSortDesc);
 
-  // 조회 post 데이터 존재 여부 체크하여 없으면 메인으로 이동시킴
-  const checkPersencePost = async () => {
-    const post = await getPostById(targetId);
-    if (!post) {
-      alert("해당 포스터는 삭제됐거나 찾을 수 없습니다.");
-      window.location.href = "/";
-      return;
-    }
-  };
+  // 이미 삭제된 포스터를 선택해 상세 진입한 경우 메인으로 돌아감
+  useEffect(() => {
+    const checkDeletedPost = async () => {
+      const post = await getPostById(initialTargetId);
+      if (!post) {
+        console.log("targetId : " + initialTargetId);
+        alert("해당 포스터는 삭제됐거나 찾을 수 없습니다.");
+        window.location.href = "/";
+        return;
+      }
+    };
+    checkDeletedPost();
+  }, []);
 
   // 초기 진입 시 클릭한 포스트로 스크롤 이동
   useEffect(() => {
-    checkPersencePost();
-
     // URL에 해시가 없다면 붙여줌으로써 브라우저 네이티브 스크롤 트리거
-    if (window.location.hash !== `#post-${targetId}`) {
-      window.location.replace(`#post-${targetId}`);
+    if (window.location.hash !== `#post-${initialTargetId}`) {
+      window.location.replace(`#post-${initialTargetId}`);
     }
 
     // url로 진입한 경우 스크롤 깜빡임을 보여주지 않기 위해 지연시간 적용
@@ -53,11 +55,10 @@ export default function PostDetailFeedMobile({
 
       return () => clearTimeout(timer);
     }
-  }, [targetId]);
+  }, [initialTargetId]);
 
   // 스크롤 시 URL 업데이트 (Intersection Observer)
   useEffect(() => {
-    // 핵심: 준비가 안 됐으면 감시 시작도 안 함
     if (!isReady) return;
 
     const observerOptions = {
@@ -86,10 +87,11 @@ export default function PostDetailFeedMobile({
 
   // 목록으로 버튼
   const handleClose = () => {
+    router.refresh(); // 서버 액션 초기화
     if (isIntercepted) {
       router.back(); // 메인에서 진입했으면 뒤로가기
     } else {
-      router.push("/"); // url로 진입했으면 메인으로
+      router.replace("/"); // url로 진입했으면 메인으로
     }
   };
 

@@ -1,6 +1,5 @@
 "use server";
 
-import { v4 as uuidv4 } from "uuid";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
@@ -99,6 +98,7 @@ export async function deletePost(postId: string): Promise<ActionResponseType> {
 
     // 해당 포스터가 DB에 존재하지 않는 경우
     if (!post) {
+      revalidatePath("/");
       return {
         success: false,
         errors: "해당 포스터는 삭제됐거나 찾을 수 없습니다.",
