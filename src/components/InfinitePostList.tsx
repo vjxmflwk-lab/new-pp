@@ -48,7 +48,11 @@ export default function InfinitePostList({
 
     setIsFetching(true);
     try {
-      const { posts, nextCursor } = await getPostsAllWithCursor(cursor);
+      console.log("?");
+      const { posts, nextCursor } = await getPostsAllWithCursor(
+        cursor,
+        isSortDesc,
+      );
       setMorePosts((prev) => [...prev, ...posts]);
       setCursor(nextCursor);
     } catch (error) {

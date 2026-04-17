@@ -35,6 +35,7 @@ export async function getPostsAllWithCursor(
 ) {
   try {
     const limit = 15;
+    console.log("isSortDesc: " + isSortDesc);
 
     const posts = await prisma.post.findMany({
       include: {

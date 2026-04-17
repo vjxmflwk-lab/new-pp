@@ -29,7 +29,6 @@ export default function PostDetailFeedMobile({
     const checkDeletedPost = async () => {
       const post = await getPostById(initialTargetId);
       if (!post) {
-        console.log("targetId : " + initialTargetId);
         alert("해당 포스터는 삭제됐거나 찾을 수 없습니다.");
         window.location.href = "/";
         return;
